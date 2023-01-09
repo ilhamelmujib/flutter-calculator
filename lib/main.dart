@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,12 +15,21 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  String displayText = "0";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,12 +40,15 @@ class MyHomePage extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Text(
-                  '0',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline3!
-                      .copyWith(color: Colors.white),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    displayText,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3!
+                        .copyWith(color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -48,13 +62,17 @@ class MyHomePage extends StatelessWidget {
                 backgroundColor: Theme.of(context).primaryColorLight,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: 'C',
-                onTap: () {},
+                onTap: () {
+                  tapDeleteAll();
+                },
               ),
               CalculatorButton(
                 backgroundColor: Theme.of(context).primaryColorLight,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '+/-',
-                onTap: () {},
+                onTap: () {
+                  tapConvertInteger();
+                },
               ),
               CalculatorButton(
                 backgroundColor: Theme.of(context).primaryColorLight,
@@ -67,25 +85,33 @@ class MyHomePage extends StatelessWidget {
                 foregroundColor: Theme.of(context).primaryColorLight,
                 text: 'DEL',
                 icon: Icons.backspace,
-                onTap: () {},
+                onTap: () {
+                  tapDelete();
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '7',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('7');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '8',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('8');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '9',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('9');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Theme.of(context).primaryColorDark,
@@ -97,19 +123,25 @@ class MyHomePage extends StatelessWidget {
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '4',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('4');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '5',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('5');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '6',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('6');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Theme.of(context).primaryColorDark,
@@ -121,19 +153,25 @@ class MyHomePage extends StatelessWidget {
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '1',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('1');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '2',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('2');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '3',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('3');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Theme.of(context).primaryColorDark,
@@ -145,13 +183,17 @@ class MyHomePage extends StatelessWidget {
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '0',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('0');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).primaryColorDark,
                 text: '.',
-                onTap: () {},
+                onTap: () {
+                  tapNumber('.');
+                },
               ),
               CalculatorButton(
                 backgroundColor: Theme.of(context).primaryColorLight,
@@ -171,6 +213,50 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
+
+
+  void tapDeleteAll(){
+    setState(() {
+      displayText = "0";
+    });
+  }
+
+  void tapConvertInteger(){
+    setState(() {
+      if(displayText != "0"){
+        if(displayText[0] == "-"){
+          displayText.replaceAll("-", "");
+        }else{
+          displayText = "-$displayText";
+        }
+      }
+    });
+  }
+
+  void tapNumber(String text) {
+    setState(() {
+      if (displayText == "0") {
+        displayText = text;
+      } else {
+        displayText = displayText + text;
+      }
+    });
+  }
+
+  void tapDelete() {
+    setState(() {
+      if (displayText != "0") {
+        if (displayText.length == 1) {
+          displayText = "0";
+        } else {
+          List<String> text = displayText.split("");
+          text.removeLast();
+          displayText = text.join();
+        }
+      }
+    });
+  }
+
 }
 
 class CalculatorButton extends StatelessWidget {
